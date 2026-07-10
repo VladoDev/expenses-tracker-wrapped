@@ -1,6 +1,25 @@
 <!--
   Sync Impact Report
   ===================
+  Version change: 1.1.0 → 1.2.0
+  Modified principles: None
+  Added sections:
+    - Development Workflow → new subsection "Git Workflow": permanent
+      branches (master/staging/dev) mapped to the three environments,
+      mandatory feature branches named after the feature ID
+      (feature/<id>-<short-name>), bugfix/hotfix branch conventions,
+      and the promotion flow between branches
+  Removed sections: None
+  Templates requiring updates:
+    - .specify/templates/plan-template.md ✅ no changes needed
+    - .specify/templates/spec-template.md ✅ no changes needed
+    - .specify/templates/tasks-template.md ✅ no changes needed
+  Follow-up TODOs: None
+-->
+
+<!--
+  Sync Impact Report (previous amendment, kept for history)
+  ===================
   Version change: 1.0.0 → 1.1.0
   Modified principles:
     - III. Offline-First → renumbered IV, unchanged in substance, but now
@@ -264,6 +283,42 @@ every feature spec MUST rely on.
 - All linting rules (`flutter analyze`) MUST pass with
   zero warnings before merge
 
+### Git Workflow
+
+Three permanent branches MUST exist, mapped one-to-one to the
+three environments defined in Environments & Flavors:
+
+| Branch | Environment | Deploys to |
+|---|---|---|
+| `dev` | `dev` | `finance-wrapped-dev` |
+| `staging` | `staging` | `finance-wrapped-staging` |
+| `master` | `prod` | `finance-wrapped-prod` |
+
+- Direct commits to `dev`, `staging`, or `master` are FORBIDDEN.
+  All changes land via pull request.
+- **Feature branches**: every feature spec produced by Spec Kit
+  MUST be developed on its own branch, branched off `dev` and
+  named after its feature ID: `feature/<id>-<short-name>` (e.g.
+  `feature/001-setup-fundacional`,
+  `feature/002-registro-transacciones`). This keeps the branch
+  name traceable to its `spec.md`/`plan.md`/`tasks.md` in the
+  repo.
+- **Bugfix branches** (non-feature fixes) follow
+  `fix/<short-description>`, also branched off `dev`.
+- **Promotion flow**: `feature/*` → PR into `dev` (requires
+  passing tests + lint + Constitution Check) → periodic release
+  PR from `dev` → `staging` for QA sign-off → release PR from
+  `staging` → `master` once QA approves, tagged with a semantic
+  version (`vX.Y.Z`) on merge.
+- **Hotfixes**: urgent production fixes branch off `master` as
+  `hotfix/<short-description>`, merge back into `master`, and
+  MUST be back-merged into `staging` and `dev` immediately after
+  to avoid regressions on the next promotion.
+- A feature branch MUST NOT be merged into `dev` until its
+  acceptance checklist in `spec.md` is fully satisfied.
+- No branch other than `master` may trigger a build submitted to
+  the App Store / Play Store production tracks.
+
 ## Governance
 
 This constitution supersedes all other development
@@ -283,4 +338,4 @@ Compliance review: every plan MUST include a
 "Constitution Check" section verifying alignment with
 all active principles before implementation proceeds.
 
-**Version**: 1.1.0 | **Ratified**: 2026-07-09 | **Last Amended**: 2026-07-09
+**Version**: 1.2.0 | **Ratified**: 2026-07-09 | **Last Amended**: 2026-07-10
