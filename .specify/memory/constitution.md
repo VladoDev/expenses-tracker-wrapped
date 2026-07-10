@@ -239,6 +239,13 @@ privacy or security failure is existential, not just a bug.
   widget tests for every screen; Firestore Security Rules MUST
   have automated emulator tests
 
+> Package-level detail (exact libraries, testing tools, CI/CD
+> pipeline) is documented in `tech-stack.md`. This constitution
+> fixes the *choice*; `tech-stack.md` fixes the *implementation
+> detail* derived from it. Any conflict between the two MUST be
+> resolved in favor of this constitution, with `tech-stack.md`
+> updated to match.
+
 ## Environments & Flavors
 
 Three Flutter flavors MUST exist: `dev`, `staging`, `prod` — each
